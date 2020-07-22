@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+
+    <!--  Navigator  -->
+    <nav th:replace="_fragments :: menu(0)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui orange header item">Li Nie</h2>
+                <a href="#" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="idea icon"></i>Communities</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>Floor Plans</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="info icon"></i>About me</a>
+
+                <div class="right m-item item m-mobile-hide">
+                    <div class="ui icon inverted transparent input">
+                        <input type="text" placeholder="Search"><i class="search link icon"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+
+    </nav>
+
+    <!--  Content  -->
+    <div class="m-container-small m-padded-tb-large">
+        <div class="ui container">
+            <div class="ui top attached segment">
+                <div class="ui right aligned basic segment">
+                    <div class="ui orange basic left pointing label" th:each="tag : ${project.tags}" th:text="${tag.name}">Tags</div>
+                </div>
+                <h2 class="ui center aligned header" th:text="${project.title}">Project Header</h2>
+            </div>
+            <div class="ui attached segment">
+                <div id="content" class="m-padded-lr-responsive m-padded-tb-large" th:text="${project.content}">DETAILS</div>
+            </div>
+
+            <div class="ui bottom attached segment">
+
+                <!--Comment Display-->
+                <div id="comment-container" class="ui orange segment">
+                    <div th:fragment="commentList">
+                        <div class="ui threaded comments" style="max-width: 100%;">
+                            <h3 class="ui dividing header">Comments</h3>
+
+                            <!--Parent Comment-->
+                            <div class="comment" th:each="comment : ${comments}">
+                                <div class="content">
+                                    <a class="author" th:text="${comment.username}">Matt</a>
+                                    <div class="metadata">
+                                        <span class="date" th:text="${#dates.format(comment.createTime, 'MM-dd-yyyy HH:mm')}">Today at 5:42PM</span>
+                                    </div>
+                                    <div class="text" th:text="${comment.content}">
+                                        How artistic!
+                                    </div>
+                                    <div class="actions">
+                                        <a class="reply" data-commentid="1" data-commentusername="Matt" onclick="reply(this)"
+                                           th:attr="data-commentid=${comment.id}, data-commentusername=${comment.username}">Reply</a>
+                                    </div>
+                                </div>
+
+                                <!--Children Comments-->
+                                <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
+                                    <div class="comment" th:each="reply : ${comment.replyComments}">
+                                        <div class="content">
+                                            <a class="author">
+                                                <span th:text="${reply.username}">Matt</span>
+                                                <span th:text="'@'+${reply.parentComment.username}" style="color: orange">Replier</span>
+                                            </a>
+                                            <div class="metadata">
+                                                <span class="date" th:text="${#dates.format(reply.createTime, 'MM-dd-yyyy HH:mm')}">Today at 5:42PM</span>
+                                            </div>
+                                            <div class="text" th:text="${reply.content}">
+                                                How artistic!
+                                            </div>
+                                            <div class="actions">
+                                                <a class="reply" data-commentid="1" data-commentusername="Matt" onclick="reply(this)"
+                                                   th:attr="data-commentid=${reply.id}, data-commentusername=${reply.username}">Reply</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--Comment Submit-->
+                <div class="ui bottom attached segment">
+                    <div class="ui form">
+                        <input type="hidden" name="project.id" th:value="${project.id}">
+                        <input type="hidden" name="parentComment.id" value="-1">
+                        <div class="field">
+                            <textarea name="content" placeholder="Comment here..."></textarea>
+                        </div>
+                        <div class="fields">
+                            <div class="field m-mobile-wide m-margin-bottom">
+                                <div class="ui left icon input">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="username" placeholder="username">
+                                </div>
+                            </div>
+                            <div class="field m-mobile-wide m-margin-bottom">
+                                <div class="ui left icon input">
+                                    <i class="mail icon"></i>
+                                    <input type="text" name="email" placeholder="email">
+                                </div>
+                            </div>
+                            <div class="field m-mobile-wide m-margin-bottom">
+                                <button id="commentpost-btn" type="button" class="ui orange button m-mobile-wide"><i class="edit icon"></i>Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Footer  -->
+    <footer class="ui inverted vertical segment">
+        <div class="ui center aligned container">
+            <a target="_blank" class="m-padded-icon" href="https://github.com/nieli9697">
+                <i class="big github icon"></i>
+            </a>
+            <a target="_blank" class="m-padded-icon" href="https://www.linkedin.com/in/li-nie-2a334a17b/">
+                <i class="big linkedin icon"></i>
+            </a>
+            <i class="big envelope outline icon m-padded-icon"></i>
+            <div class="content m-inline-block">nieli9697@utexas.edu</div>
+            <div class="ui inverted section divider"></div>
+            <h4 class="m-text-thin m-text-spaced m-opicity">Learn as you grow, grow as you learn.</h4>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script>
+        $('.menu.toggle').click(function() {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+
+        $('.ui.dropdown').dropdown({
+            on : 'hover'
+        });
+
+        $('.ui.form').form({
+            fields: {
+                title: {
+                    identifier: 'content',
+                    rules: [{
+                        type: 'empty',
+                        prompt: '请输入评论内容'
+                    }
+                    ]
+                },
+                content: {
+                    identifier: 'username',
+                    rules: [{
+                        type: 'empty',
+                        prompt: '请输入你的大名'
+                    }]
+                },
+                type: {
+                    identifier: 'email',
+                    rules: [{
+                        type: 'email',
+                        prompt: '请填写正确的邮箱地址'
+                    }]
+                }
+            }
+        });
+
+        $(function () {
+            $("#comment-container").load("/comments/"+$("[name='project.id']").val());
+        })
+
+        $('#commentpost-btn').click(function() {
+            var boo = $('.ui.form').form('validate form');
+            if (boo) {
+                postData();
+                console.log('successful validation!');
+            } else {
+                console.log('validation failed!');
+            }
+        });
+
+        function postData() {
+            $("#comment-container").load("/comments",{
+                "parentComment.id" : $("[name='parentComment.id']").val(),
+                "project.id" : $("[name='project.id']").val(),
+                "username": $("[name='username']").val(),
+                "email"   : $("[name='email']").val(),
+                "content" : $("[name='content']").val()
+            },function (responseTxt, statusTxt, xhr) {
+                // call back
+                clearContent();
+            });
+        }
+
+        function clearContent() {
+            $("[name='content']").val('');
+            $("[name='parentComment.id']").val(-1);
+            $("[name='content']").attr("placeholder", "Comment here...");
+            $("[name='username']").val('');
+            $("[name='email']").val('');
+        }
+
+        function reply(obj) {
+            var commentId = $(obj).data('commentid');
+            var commentUsername = $(obj).data('commentusername');
+            $("[name='content']").attr("placeholder", "@"+commentUsername).focus();
+            $("[name='parentComment.id']").val(commentId);
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace="${title}">Renting Apartments</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+
+<body>
+<!--  Navigator  -->
+<nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui orange header item">Renting Apartments</h2>
+            <a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="home icon"></i>Home</a>
+            <a href="#" th:href="@{/categories/-1}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="idea icon"></i>Communities</a>
+            <a href="#" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="tags icon"></i>Floor Plans</a>
+            <a href="#" th:href="@{/about}" class="m-item item m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="info icon"></i>About us</a>
+
+            <div class="right m-item item m-mobile-hide">
+                <form name="search" action="#" method="post" th:action="@{/search}" target="_blank">
+                    <div class="ui icon inverted transparent input">
+                        <input type="text" name="query" placeholder="Search" th:value="${query}">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+
+
+
+            <div class="right m-item m-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <a th:if="${session.isEmpty()}" th:href="@{/login}">Login</a>
+                    <div class="text" th:if="${!session.isEmpty()}" th:text="${session.user.username}">Login</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" th:href="@{/projects}" class="item">Make a post</a>
+                        <a href="#" th:href="@{/logout}" class="item">Log out</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<div th:fragment="secondary_menu(a)" class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="ui right menu">
+            <a href="#" class="item" th:classappend="${a==1} ? 'active orange'">Release</a>
+            <a href="#" class="item" th:classappend="${a==2} ? 'active orange'">Listing</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

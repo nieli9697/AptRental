@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+
+    <!--  Navigator  -->
+    <nav th:replace="_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui orange header item">Renting Apartments</h2>
+                <a href="#" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="idea icon"></i>Communities</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>Floor Plans</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="info icon"></i>About us</a>
+
+                <div class="right m-item item m-mobile-hide">
+                    <div class="ui icon inverted transparent input">
+                        <input type="text" placeholder="Search"><i class="search link icon"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+
+    </nav>
+
+    <!--  Content  -->
+    <div class="m-container m-padded-tb-large">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <!--LEFT-->
+                <div class="eleven wide column">
+                    <!--header-->
+                    <div class="ui top attached segment">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <h3 class="ui orange header">Projects</h3>
+                            </div>
+                            <div class="right aligned column">
+                                <h2 class="class ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}"> </h2> Projects in total
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--listing-->
+                    <div class="ui attached segment">
+                        <div class="ui padded vertical segment m-padded-lr">
+                            <div class="ui padded vertical segment m-padded-tb-large" th:each="project : ${page.content}">
+                                <h3 class="ui header"><a href="#" th:href="@{/project/{id}(id=${project.id})}" target="_blank" class="m-black" th:text="${project.title}">Header</a></h3>
+                                <p>description...click to explore...</p>
+
+                                <div class="ui grid">
+                                    <div class="eleven wide column middle aligned">
+                                        <i class="small eye icon"></i><span th:text="${project.views}">111</span>
+                                    </div>
+
+                                    <div class="right aligned five wide column">
+                                        <a href="#" target="_blank" class="ui orange basic label" th:text="${project.category.name}">CATEGORY</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--footer-->
+                    <div class="ui bottom attached segment" th:if="${page.totalPages}>1">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <a href="#" th:href="@{/(page=${page.number}-1)}" th:unless="${page.first}" class="ui orange basic button">Previous</a>
+                            </div>
+                            <div class="right aligned column">
+                                <a href="#" th:href="@{/(page=${page.number}+1)}" th:unless="${page.last}" class="ui orange basic button">Next</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--RIGHT-->
+                <div class="five wide column">
+                    <!--Category-->
+                    <div class="ui segments">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="idea icon"></i>Category
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="#" target="_blank">more <i class="angle double right icon"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui orange segment">
+                            <div class="ui fluid vertical menu">
+
+                                <a href="#" class="item" th:each="category : ${categories}"><span th:text="${category.name}">C1</span>
+                                    <div class="ui orange basic left pointing label" th:text="${#arrays.length(category.projects)}">1</div>
+                                </a>
+
+<!--                                <a href="#" class="item">C1-->
+<!--                                    <div class="ui orange basic left pointing label">1</div>-->
+<!--                                </a>-->
+<!--                                <a href="#" class="item">C1-->
+<!--                                    <div class="ui orange basic left pointing label">1</div>-->
+<!--                                </a>-->
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Tag-->
+                    <div class="ui segments">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="tags icon"></i>Tag
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="#" target="_blank">more <i class="angle double right icon"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui orange segment">
+                            <a href="#" target="_blank" class="ui orange basic left pointing label m-margin-tb" th:each="tag : ${tags}">
+                                <span th:text="${tag.name}">Tag1</span> <div class="detail" th:text="${#arrays.length(tag.projects)}">1</div>
+                            </a>
+
+
+<!--                            <a href="#" target="_blank" class="ui orange basic left pointing label m-margin-tb">-->
+<!--                                Tag1 <div class="detail">1</div>-->
+<!--                            </a>-->
+<!--                            <a href="#" target="_blank" class="ui orange basic left pointing label m-margin-tb">-->
+<!--                                Tag1 <div class="detail">1</div>-->
+<!--                            </a>-->
+<!--                            <a href="#" target="_blank" class="ui orange basic left pointing label m-margin-tb">-->
+<!--                                Tag1 <div class="detail">1</div>-->
+<!--                            </a>-->
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script>
+        $('.menu.toggle').click(function() {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+
+        $('.ui.dropdown').dropdown({
+            on : 'hover'
+        });
+    </script>
+</body>
+</html>

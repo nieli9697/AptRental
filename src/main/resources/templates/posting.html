@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css">
+</head>
+<body>
+
+    <!--  Navigator  -->
+    <nav th:replace="_fragments :: menu(0)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui orange header item">Renting Apartments</h2>
+            <a href="#" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="idea icon"></i>Communities</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>Floor Plans</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="info icon"></i>About me</a>
+
+            <div class="right m-item item m-mobile-hide">
+                <div class="ui icon inverted transparent input">
+                    <input type="text" placeholder="Search"><i class="search link icon"></i>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+
+</nav>
+
+
+    <!--  Content  -->
+    <div class="m-container-small m-padded-tb-large">
+        <div class="ui container">
+            <form id="project-form" th:object="${project}" action="#" method="post" th:action="@{/projects}" class="ui form">
+                <input type="hidden" name="id" th:value="*{id}">
+                <input type="hidden" name="published">
+                <div class="required field">
+                    <input type="text" name="title" placeholder="Title" th:value="*{title}">
+                </div>
+
+                <div class="required field">
+                    <div id="md-content" style="z-index: 1 !important;">
+                        <textarea name="content" placeholder="Type here..." th:text="*{content}"></textarea>
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="required field">
+                        <div class="ui left action labeled input">
+                            <label class="ui compact orange basic label">Community</label>
+                            <div class="ui fluid selection dropdown">
+                                <input type="hidden" name="category.id" th:value="*{category}!=null ? *{category.id}">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Community</div>
+                                <div class="menu">
+                                    <div class="item" th:each="category : ${categories}" th:data-value="${category.id}" th:text="${category.name}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="required field">
+                        <div class="ui left action labeled input">
+                            <label class="ui compact orange basic label">Floor Plan</label>
+                            <div class="ui fluid multiple search selection dropdown">
+                                <input type="hidden" name="tagIds" th:value="*{tagIds}">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Floor Plan</div>
+                                <div class="menu">
+                                    <div class="item" th:each="tag : ${tags}" th:data-value="${tag.id}" th:text="${tag.name}"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui error message"></div>
+
+                <div class="ui right aligned container">
+                    <button type="button" class="ui button" onclick="window.history.go(-1)">Back</button>
+                    <button type="button" id="save-btn" class="ui secondary button">Save</button>
+                    <button type="button" id="publish-btn" class="ui orange button">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $('.menu.toggle').click(function() {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });
+
+    $('#save-btn').click(function () {
+        $('[name="published"]').val(false);
+        $('#project-form').submit();
+    });
+
+    $('#publish-btn').click(function () {
+        $('[name="published"]').val(true);
+        $('#project-form').submit();
+    });
+
+
+
+    $('.ui.form').form({
+        fields : {
+            title : {
+                identifier: 'title',
+                rules: [{
+                    type : 'empty',
+                    prompt: 'Please type in title!'
+                }]
+            },
+            content : {
+                identifier: 'content',
+                rules: [{
+                    type : 'empty',
+                    prompt: 'Please type in content!'
+                }]
+            },
+            categoryId : {
+                identifier: 'category.id',
+                rules: [{
+                    type : 'empty',
+                    prompt: 'Please select category!'
+                }]
+            },
+            tagIds : {
+                identifier: 'tagIds',
+                rules: [{
+                    type : 'empty',
+                    prompt: 'Please select tags!'
+                }]
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
