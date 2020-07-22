@@ -44,10 +44,10 @@
                     <div class="ui top attached segment">
                         <div class="ui middle aligned two column grid">
                             <div class="column">
-                                <h3 class="ui orange header">Projects</h3>
+                                <h3 class="ui orange header">Posts</h3>
                             </div>
                             <div class="right aligned column">
-                                <h2 class="class ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}"> </h2> Projects in total
+                                <h2 class="class ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}"> </h2> Posts in total
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <div class="ui padded vertical segment m-padded-lr">
                             <div class="ui padded vertical segment m-padded-tb-large" th:each="project : ${page.content}">
                                 <h3 class="ui header"><a href="#" th:href="@{/project/{id}(id=${project.id})}" target="_blank" class="m-black" th:text="${project.title}">Header</a></h3>
-                                <p>description...click to explore...</p>
+                                <p>click to explore...</p>
 
                                 <div class="ui grid">
                                     <div class="eleven wide column middle aligned">
@@ -92,7 +92,7 @@
                         <div class="ui secondary segment">
                             <div class="ui two column grid">
                                 <div class="column">
-                                    <i class="idea icon"></i>Category
+                                    <i class="idea icon"></i>Community
                                 </div>
                                 <div class="right aligned column">
                                     <a href="#" target="_blank">more <i class="angle double right icon"></i></a>
@@ -123,7 +123,7 @@
                         <div class="ui secondary segment">
                             <div class="ui two column grid">
                                 <div class="column">
-                                    <i class="tags icon"></i>Tag
+                                    <i class="tags icon"></i>Floor Plan
                                 </div>
                                 <div class="right aligned column">
                                     <a href="#" target="_blank">more <i class="angle double right icon"></i></a>

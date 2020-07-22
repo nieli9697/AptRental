@@ -41,10 +41,10 @@
             <div class="ui top attached segment">
                 <div class="ui middle aligned two column grid">
                     <div class="column">
-                        <h3 class="ui orange header">Categories</h3>
+                        <h3 class="ui orange header">Communities</h3>
                     </div>
                     <div class="right aligned column">
-                        <h2 class="class ui orange header m-inline-block m-text-thin" th:text="${#arrays.length(categories)}"> </h2> Categories in total
+                        <h2 class="class ui orange header m-inline-block m-text-thin" th:text="${#arrays.length(categories)}"> </h2> Communities in total
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 <div class="ui padded vertical segment m-padded-lr">
                     <div class="ui padded vertical segment m-padded-tb-small" th:each="project : ${page.content}">
                         <h3 class="ui header"><a href="#" th:href="@{/project/{id}(id=${project.id})}" target="_blank" class="m-black" th:text="${project.title}">Header</a></h3>
-                        <p>description...click to explore...</p>
+                        <p>click to explore...</p>
 
                         <div class="ui grid">
                             <div class="eleven wide column middle aligned">
